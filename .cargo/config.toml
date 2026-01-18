@@ -13,3 +13,5 @@ rustflags = [
     "-Clink-args=--export=__tls_align",
     "-Clink-args=--export=__tls_base",
 ]
+
+target = "wasm32-unknown-unknown"

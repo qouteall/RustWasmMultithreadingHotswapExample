@@ -1,0 +1,63 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "wasm_mt_hotswap_example"
+# publish = false
+version = "0.1.0"
+
+# [lib]
+# crate-type = ["cdylib"]
+
+[dependencies]
+console_error_panic_hook = "0.1"
+futures-channel-preview = "0.3.0-alpha.18"
+
+rayon = "1.1.0"
+rayon-core = "1.5.0"
+raytracer = { git = 'https://github.com/alexcrichton/raytracer', branch = 'update-deps' }
+serde-wasm-bindgen = "0.6"
+serde_json = { version = "1.0" }
+js-sys = "0.3.83"
+wasm-bindgen = "0.2.106"
+wasm-bindgen-futures = "0.4.56"
+
+# update: cargo update -p subsecond@0.7.2
+subsecond = { git = "https://github.com/qouteall/dioxus", branch = "wasm_mt_4", features = ["experimental_wasm_multithreading_support"] }
+dioxus-cli-config = { git = "https://github.com/qouteall/dioxus", branch = "wasm_mt_4", features = ["web"] }
+dioxus-devtools = { git = "https://github.com/qouteall/dioxus", branch = "wasm_mt_4" }
+manganis = { git = "https://github.com/qouteall/dioxus", branch = "wasm_mt_4" }
+anyhow = "1.0.100"
+
+leb128 = "0.2.5"
+
+[dependencies.web-sys]
+version = "0.3.83"
+features = [
+  'CanvasRenderingContext2d',
+  'ErrorEvent',
+  'Event',
+  'ImageData',
+  'Navigator',
+  'Window',
+  'Worker',
+  'DedicatedWorkerGlobalScope',
+  'MessageEvent',
+  "WorkerOptions",
+  "WorkerType",
+  "console",
+  "Document",
+  "Element",
+  "Location",
+  "CloseEvent",
+  "WebSocket",
+  "Response"
+]
+
+
+[profile.release]
+# This keeps debug info even in release builds
+debug = true
+
+[profile.dev]
+# Ensure debug info is enabled for dev builds (usually default)
+debug = true

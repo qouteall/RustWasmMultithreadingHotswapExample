@@ -1,0 +1,5 @@
+[workspace]
+resolver = "2"
+members = [
+    "wasm_mt_hotswap_example"
+]

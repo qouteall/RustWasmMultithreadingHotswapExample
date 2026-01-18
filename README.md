@@ -8,10 +8,8 @@ It uses nightly Rust (currently wasm multithreading requires nightly Rust).
 
 Hotswap with dx:
 
-Go into `wasm_mt_hotswap_example` folder
-
 ```
-dx serve --hot-patch --target wasm32-unknown-unknown --bundle web "--cargo-args=-Zbuild-std=std,panic_abort" --inject-loading-scripts=false --cross-origin-policy --disable-js-glue-shim
+dx serve --hot-patch --target wasm32-unknown-unknown --bundle web "--cargo-args=-Zbuild-std=std,panic_abort" --inject-loading-scripts=false --cross-origin-policy --disable-js-glue-shim --package wasm_mt_hotswap_example
 ```
 
 ---

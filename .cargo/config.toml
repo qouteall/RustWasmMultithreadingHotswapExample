@@ -14,4 +14,7 @@ rustflags = [
     "-Clink-args=--export=__tls_base",
 ]
 
-target = "wasm32-unknown-unknown"
+# if this is enabled, the dioxus project's `cargo run` will wrongly build dioxus cli in wasm target
+# cargo confuses current directory's config and dioxus target directory's config
+# How to avoid red error in RustRover: find one "#[cfg(target_arch = "wasm32")]", in left gear icon, set target to wasm32-unknown-unknwon
+#target = "wasm32-unknown-unknown"

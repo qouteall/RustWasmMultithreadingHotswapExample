@@ -213,27 +213,18 @@ pub async fn start() {
 
     let closure = Closure::<dyn FnMut()>::new(move || {
         subsecond::call(|| {
-            // console_log!("Test patch data segment");
-
-            // // Not yet working because TLS resets so worker pool resets
-            // broadcast_to_workers(|| {
-            //     console_log!("Test patch data segment in worker");
-            // });
+            let raw_ptr = MY_THREAD_ID.with(|s| s as *const usize);
+            let thread_id = MY_THREAD_ID.with(|s| *s);
+            console_log!("{} thread id next thread id addr {:?}", thread_id, (&NEXT_THREAD_ID) as *const AtomicUsize);
+            console_log!("{} thread id addr {:?}.", thread_id, raw_ptr);
         });
-
-        let raw_ptr = MY_THREAD_ID.with(|s| s as *const usize);
-        let thread_id = MY_THREAD_ID.with(|s| *s);
-        console_log!("{} thread id next thread id addr {:?}", thread_id, (&NEXT_THREAD_ID) as *const AtomicUsize);
-        console_log!("{} thread id addr {:?}.", thread_id, raw_ptr);
-
-        // console_log!("Worker {}: Test patch data segment", thread_id);
 
         broadcast_to_workers(|| {
             subsecond::call(|| {
                 let raw_ptr = MY_THREAD_ID.with(|s| s as *const usize);
                 let thread_id = MY_THREAD_ID.with(|s| *s);
                 console_log!("{} thread id next thread id addr {:?}", thread_id, (&NEXT_THREAD_ID) as *const AtomicUsize);
-                console_log!("{} thread id addr {:?}.", thread_id, raw_ptr);
+                console_log!("{} thread id addr {:?}..", thread_id, raw_ptr);
 
                 // console_log!("Worker {}: Test patch data segment", thread_id);
             });

@@ -56,7 +56,10 @@ static NEXT_THREAD_ID: AtomicUsize = AtomicUsize::new(0);
 
 thread_local! {
     // for testing TLS
-    static MY_THREAD_ID: usize = (NEXT_THREAD_ID.fetch_add(1, Ordering::Relaxed));
+    static MY_THREAD_ID: usize = {
+        console_log!("Allocating thread id (TLS init)");
+        (NEXT_THREAD_ID.fetch_add(1, Ordering::Relaxed))
+    };
 }
 
 #[wasm_bindgen]
@@ -210,7 +213,7 @@ pub async fn start() {
 
     let closure = Closure::<dyn FnMut()>::new(move || {
         subsecond::call(|| {
-            console_log!("Test patch data segment");
+            // console_log!("Test patch data segment");
 
             // // Not yet working because TLS resets so worker pool resets
             // broadcast_to_workers(|| {
@@ -218,11 +221,21 @@ pub async fn start() {
             // });
         });
 
+        let raw_ptr = MY_THREAD_ID.with(|s| s as *const usize);
+        let thread_id = MY_THREAD_ID.with(|s| *s);
+        console_log!("{} thread id next thread id addr {:?}", thread_id, (&NEXT_THREAD_ID) as *const AtomicUsize);
+        console_log!("{} thread id addr {:?}.", thread_id, raw_ptr);
+
+        // console_log!("Worker {}: Test patch data segment", thread_id);
+
         broadcast_to_workers(|| {
             subsecond::call(|| {
+                let raw_ptr = MY_THREAD_ID.with(|s| s as *const usize);
                 let thread_id = MY_THREAD_ID.with(|s| *s);
+                console_log!("{} thread id next thread id addr {:?}", thread_id, (&NEXT_THREAD_ID) as *const AtomicUsize);
+                console_log!("{} thread id addr {:?}.", thread_id, raw_ptr);
 
-                console_log!("Worker {}: Test patch data segment", thread_id);
+                // console_log!("Worker {}: Test patch data segment", thread_id);
             });
         });
     });

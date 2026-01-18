@@ -39,7 +39,8 @@ function run() {
   // The maximal concurrency of our web worker pool is `hardwareConcurrency`,
   // so set that up here and this ideally is the only location we create web
   // workers.
-  init_worker_pool(navigator.hardwareConcurrency + 1);
+  // init_worker_pool(navigator.hardwareConcurrency + 1);
+  init_worker_pool(2);
 
   // Configure various buttons and such.
   button.onclick = function() {
